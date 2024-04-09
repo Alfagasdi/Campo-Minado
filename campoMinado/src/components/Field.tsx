@@ -1,13 +1,18 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, TouchableWithoutFeedback } from 'react-native'
 
 import { stylesBloc } from '../styles/Styles'
 import { fieldProperties } from '../styles/params'
 import Mine from './Mine'
+import Flag from './Flag'
 
-export default function Field(props: fieldProperties): React.JSX.Element {
+export default function Field(props: {
+    board: fieldProperties,
+    onFieldPress: () => void,
+    onFlagField: () => void
+}): React.JSX.Element {
 
-    const { mined, opened, nearMines, exploded } = props
+    const { mined, opened, nearMines, exploded, flagged } = props.board
 
     const styleField: any[] = [stylesBloc.field]
 
@@ -25,12 +30,15 @@ export default function Field(props: fieldProperties): React.JSX.Element {
 
 
     return (
-        <View style={styleField}>
-            {!mined && opened && nearMines > 0 ?
-                <Text style={[stylesBloc.label, { color: color }]}>
-                    {nearMines}
-                </Text> : false}
-            {mined && opened ? <Mine /> : false}
-        </View>
+        <TouchableWithoutFeedback onPress={props.onFieldPress} onLongPress={props.onFlagField}>
+            <View style={styleField}>
+                {!mined && opened && nearMines > 0 ?
+                    <Text style={[stylesBloc.label, { color: color }]}>
+                        {nearMines}
+                    </Text> : false}
+                {mined && opened ? <Mine /> : false}
+                {flagged && !opened ? <Flag /> : false}
+            </View>
+        </TouchableWithoutFeedback>
     )
 }

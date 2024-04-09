@@ -5,7 +5,7 @@ const params = {
     borderSize: 5,
     fontSize: 15,
     headerRatio: 0.15,
-    dificultLeve: 0.1,
+    dificultLevel: 0.1,
     getCollumsAmout() {
         const width = Dimensions.get('window').width
         return Math.floor(width / this.blockSize)
@@ -18,10 +18,21 @@ const params = {
 }
 
 export type fieldProperties = {
-    mined: any, 
+    mined: boolean, 
     opened: boolean, 
-    nearMines: any, 
-    exploded: boolean
+    nearMines: number, 
+    exploded: boolean,
+    flagged: boolean
+}
+
+export type boardProperties = {
+    row: number,
+    column: number,
+    opened: boolean,
+    flagged: boolean,
+    mined: boolean,
+    exploded: boolean,
+    nearMines: number
 }
 
 export default params

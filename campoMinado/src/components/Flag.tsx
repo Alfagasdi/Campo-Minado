@@ -7,7 +7,10 @@ export default function Flag(): React.JSX.Element{
 
     return(
         <View style={styleFlag.container}>
-
+            <View style={styleFlag.flagPole}/>
+            <View style={styleFlag.flag}/>
+            <View style={styleFlag.base1}/>
+            <View style={styleFlag.base2}/>
         </View>
     )
 }
