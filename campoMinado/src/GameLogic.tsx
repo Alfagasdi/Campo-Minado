@@ -105,4 +105,8 @@ const createMinedBoard = (rows: number, columns: number, mineAmount: number) => 
     return board
 }
 
-export { cloneBoard, createMinedBoard, hadExplosion, openField, showMines, wonGame, flagField }
+const flagsUsed = (board: boardProperties[][]) => {
+    return fields(board).filter(field => field.flagged).length
+}
+
+export { cloneBoard, createMinedBoard, hadExplosion, openField, showMines, wonGame, flagField, flagsUsed }

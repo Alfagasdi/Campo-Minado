@@ -37,7 +37,7 @@ export default function Field(props: {
                         {nearMines}
                     </Text> : false}
                 {mined && opened ? <Mine /> : false}
-                {flagged && !opened ? <Flag /> : false}
+                {flagged && !opened ? <Flag big={false}/> : false}
             </View>
         </TouchableWithoutFeedback>
     )

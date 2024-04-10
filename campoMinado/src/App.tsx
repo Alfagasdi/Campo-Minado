@@ -1,15 +1,18 @@
 import React, { Component } from 'react'
 import { SafeAreaView, Text, View, Alert } from 'react-native'
 
-import { createMinedBoard, cloneBoard, hadExplosion, openField, showMines, wonGame, flagField } from './GameLogic'
+import { createMinedBoard, cloneBoard, hadExplosion, openField, showMines, wonGame, flagField, flagsUsed } from './GameLogic'
 import MineField from './components/MineField'
 import { stylesBloc } from './styles/Styles'
 import params, { boardProperties } from './styles/params'
+import Header from './components/Header'
+import DificcultySelector from './components/DificultySelector'
 
 type State = {
     board: boardProperties[][],
     won: boolean,
-    lose: boolean
+    lose: boolean,
+    showDifficultySelector: boolean
 }
 
 
@@ -23,7 +26,7 @@ export default class App extends Component<any, State> {
     }
 
     minesAmount = () => {
-        return Math.ceil(this.column * this.rows * params.dificultLevel)
+        return Math.ceil(this.column * this.rows * params.difficultyLevel)
     }
 
     createState = () => {
@@ -31,7 +34,8 @@ export default class App extends Component<any, State> {
         return {
             board,
             won: false,
-            lose: false
+            lose: false,
+            showDifficultySelector: false
         }
     }
 
@@ -59,15 +63,23 @@ export default class App extends Component<any, State> {
         if (won) {
             Alert.alert('Parabéns', 'Você venceu')
         }
-        this.setState({board, won})
+        this.setState({ board, won })
+    }
+
+    onDifficultyChange = (difficulty: number) => {
+        params.difficultyLevel = difficulty
+        this.setState(this.createState())
     }
 
     render() {
         this.createState
         return (
             <SafeAreaView style={stylesBloc.home}>
-                <Text>Início do projeto</Text>
-                <Text>{params.getCollumsAmout()} X {params.getRowsAmout()}</Text>
+                <DificcultySelector isVisible={this.state.showDifficultySelector}
+                     onCancel={() => this.setState({showDifficultySelector: false})}
+                     onLevelSelected={this.onDifficultyChange}
+                />
+                <Header flagsUsed={this.minesAmount() - flagsUsed(this.state.board)} onFlagPress={() => this.setState({showDifficultySelector: true})} newGame={() => { this.setState(this.createState()) }}></Header>
                 <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
                     <MineField
                         board={this.state.board}
